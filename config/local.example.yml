@@ -1,0 +1,18 @@
+env: "local" #dev, prod, preprod
+storage_path: "./storage/sso.db"
+token_ttl: 3h
+grpc:
+  port: 44044
+  timeout: 10h
+psql:
+  user: "myuser"
+  dbname: "mydatabase"
+  password: "mypassword"
+  host: "localhost"
+redis:
+  addr: "localhost:6379"
+  password: ""
+  db: 0
+modules:
+  database_enabled: 1
+  redis_enabled: 0
