@@ -17,7 +17,6 @@ func main() {
 		cfg.GRPC.Port,
 		cfg.PSQL,
 		cfg.Redis,
-		cfg.StoragePath,
 		cfg.TokenTtl,
 	)
 

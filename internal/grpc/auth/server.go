@@ -12,7 +12,7 @@ type Auth interface {
 		email string,
 		password string,
 		appUuid string,
-	) (token string, err error)
+	) (token string, userUuid string, err error)
 	RegisterNewUser(
 		ctx context.Context,
 		email string,
@@ -33,7 +33,7 @@ func (s *serverAuthApi) Login(
 	ctx context.Context,
 	request *pant_sso_v1.LoginRequest,
 ) (*pant_sso_v1.LoginResponse, error) {
-	token, _ := s.auth.Login(
+	token, userUuid, _ := s.auth.Login(
 		ctx,
 		request.GetEmail(),
 		request.GetPassword(),
@@ -41,15 +41,17 @@ func (s *serverAuthApi) Login(
 	)
 
 	return &pant_sso_v1.LoginResponse{
-		UserUuid: "123123",
-		AppUuid:  "1231231",
+		UserUuid: userUuid,
+		AppUuid:  request.GetAppUuid(),
 		JwtToken: token,
 	}, nil
 }
 
 func (s *serverAuthApi) Register(
 	ctx context.Context,
-	in *pant_sso_v1.RegisterRequest,
+	request *pant_sso_v1.RegisterRequest,
 ) (*pant_sso_v1.RegisterResponse, error) {
-	panic("implement me register")
+	userId, _ := s.auth.RegisterNewUser(ctx, request.GetEmail(), request.GetPassword())
+
+	return &pant_sso_v1.RegisterResponse{UserUuid: userId}, nil
 }

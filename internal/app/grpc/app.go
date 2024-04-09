@@ -5,11 +5,16 @@ import (
 	"google.golang.org/grpc"
 	"log/slog"
 	"net"
+	psqlapp "sso/internal/app/database/psql"
+	redisapp "sso/internal/app/database/redis"
 	"sso/internal/grpc/auth"
+	"sso/internal/services"
 	authservice "sso/internal/services/auth"
+	"time"
 )
 
 type HandlerServices interface {
+	MakeAuthService() *authservice.Auth
 }
 
 type App struct {
@@ -21,11 +26,14 @@ type App struct {
 func NewGrpcApp(
 	log *slog.Logger,
 	port int,
+	psql *psqlapp.PsqlApp,
+	redisApp *redisapp.RedisApp,
+	tokenTtl time.Duration,
 ) *App {
 	gRPCServer := grpc.NewServer()
-	authService := &authservice.Auth{}
+	handlerServices := services.NewHandlerServices(psql, redisApp, tokenTtl, log)
 
-	auth.RegisterServerApiHandler(gRPCServer, authService)
+	auth.RegisterServerApiHandler(gRPCServer, handlerServices.MakeAuthService())
 
 	return &App{
 		log:        log,

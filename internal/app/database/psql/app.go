@@ -22,15 +22,17 @@ func NewPsqlApp(
 	dbname string,
 	password string,
 	host string,
+	port string,
 ) *PsqlApp {
 	db, err := sqlx.Connect(
 		"postgres",
 		fmt.Sprintf(
-			"user=%s dbname=%s sslmode=disable password=%s host=%s",
+			"user=%s dbname=%s sslmode=disable password=%s host=%s port=%s",
 			user,
 			dbname,
 			password,
 			host,
+			port,
 		),
 	)
 

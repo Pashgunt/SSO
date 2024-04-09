@@ -9,13 +9,13 @@ import (
 )
 
 type Config struct {
-	Env         string        `yaml:"env" env-default:"local"`
-	StoragePath string        `yaml:"storage_path" env-required:"true"`
-	TokenTtl    time.Duration `yaml:"token_ttl" env-default:"3h"`
-	GRPC        GRPCConfig    `yaml:"grpc"`
-	PSQL        PSQL          `yaml:"psql"`
-	Redis       Redis         `yaml:"redis"`
-	Modules     ModulesConfig `yaml:"modules"`
+	Env         string              `yaml:"env" env-default:"local"`
+	StoragePath string              `yaml:"storage_path" env-required:"true"`
+	TokenTtl    time.Duration       `yaml:"token_ttl" env-default:"3h"`
+	GRPC        GRPCConfig          `yaml:"grpc"`
+	PSQL        PSQL                `yaml:"psql"`
+	Redis       Redis               `yaml:"redis"`
+	Modules     ModulesEnableConfig `yaml:"modules"`
 }
 
 type GRPCConfig struct {
@@ -23,7 +23,7 @@ type GRPCConfig struct {
 	Timeout time.Duration `yaml:"timeout" env-default:"5s"`
 }
 
-type ModulesConfig struct {
+type ModulesEnableConfig struct {
 	DatabaseEnabled int `yaml:"database_enabled" env-default:"1"`
 	RedisEnabled    int `yaml:"redis_enabled" env-default:"0"`
 }
@@ -33,6 +33,7 @@ type PSQL struct {
 	Dbname   string `yaml:"dbname" env-required:"true"`
 	Password string `yaml:"password" env-required:"true"`
 	Host     string `yaml:"host" env-required:"true"`
+	Port     string `yaml:"port"  env-default:"5432"`
 }
 
 type Redis struct {

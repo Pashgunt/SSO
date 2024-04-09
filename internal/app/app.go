@@ -20,7 +20,6 @@ func NewApp(
 	gRPCPort int,
 	PsqlConfig config.PSQL,
 	RedisConfig config.Redis,
-	storagePath string,
 	tokenTtl time.Duration,
 ) *App {
 	psqlApp := psqlapp.NewPsqlApp(
@@ -29,6 +28,7 @@ func NewApp(
 		PsqlConfig.Dbname,
 		PsqlConfig.Password,
 		PsqlConfig.Host,
+		PsqlConfig.Port,
 	)
 
 	redisApp := redisapp.NewRedisApp(
@@ -41,6 +41,9 @@ func NewApp(
 	grpcApp := grpcapp.NewGrpcApp(
 		log,
 		gRPCPort,
+		psqlApp,
+		redisApp,
+		tokenTtl,
 	)
 
 	return &App{GRPCServer: grpcApp, PSQLApp: psqlApp, REDISApp: redisApp}

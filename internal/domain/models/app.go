@@ -5,10 +5,10 @@ import (
 	"time"
 )
 
-type User struct {
+type App struct {
 	ID        uint `gorm:"primaryKey"`
-	Email     string
-	PassHash  string
+	Name      string
+	Secret    string
 	IsActual  int8
 	CreatedAt time.Time
 	UpdatedAt time.Time

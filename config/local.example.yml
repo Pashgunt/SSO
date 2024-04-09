@@ -9,6 +9,7 @@ psql:
   dbname: "mydatabase"
   password: "mypassword"
   host: "localhost"
+  port: "5432"
 redis:
   addr: "localhost:6379"
   password: ""
