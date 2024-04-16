@@ -30,7 +30,7 @@ func (a *Auth) Login(
 	a.Gorm.Model(&models.User{
 		Email:    email,
 		PassHash: hashedPassword,
-	}).First(&user)
+	}).Take(&user)
 	jwtToken, err := jwt.NewJwtToken(user, a.TokenTtl, models.App{
 		ID:        1,
 		Name:      "Test App",
@@ -60,6 +60,7 @@ func (a *Auth) RegisterNewUser(
 		UpdatedAt: time.Time{},
 		DeletedAt: gorm.DeletedAt{},
 	}
+
 	a.Gorm.Create(&user)
 
 	return strconv.Itoa(int(user.ID)), nil
