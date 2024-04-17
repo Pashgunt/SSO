@@ -34,22 +34,22 @@ make up
 ### Endpoints
 
 1. **Registration**
-```HTTP
-GRPC grpcs://localhost:44044/Auth/Register
-
-{
-"email": "test@mail.ru",
-"password": "test"
-}
-```
+    ```   
+    GRPC grpcs://localhost:44044/Auth/Register
+    
+    {
+        "email": "test@mail.ru",
+        "password": "test"
+    }
+    ```
 
 2. **Login**
-```HTTP
-GRPC grpcs://localhost:44044/Auth/Login
-
-{
-"email": "test@mail.ru",
-"password": "test",
-"appUuid": "fb84ec3b-0040-4046-8319-f685763eb19a"
-}
-```
+    ```   
+    GRPC grpcs://localhost:44044/Auth/Login
+    
+    {
+        "email": "test@mail.ru",
+        "password": "test",
+        "appUuid": "fb84ec3b-0040-4046-8319-f685763eb19a"
+    }
+    ```
