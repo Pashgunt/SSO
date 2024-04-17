@@ -2,11 +2,12 @@ package migrations
 
 import (
 	"gorm.io/gorm"
-	"os/user"
+	"sso/internal/domain/models"
 )
 
 func Migrate(db *gorm.DB) error {
-	err := db.AutoMigrate(&user.User{})
+	err := db.AutoMigrate(&models.User{}, &models.App{})
+
 	if err != nil {
 		return err
 	}

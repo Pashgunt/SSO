@@ -39,11 +39,13 @@ func NewApp(
 	)
 
 	grpcApp := grpcapp.NewGrpcApp(
-		log,
 		gRPCPort,
-		psqlApp,
-		redisApp,
-		tokenTtl,
+		config.NewHandleServiceStructure(
+			psqlApp,
+			redisApp,
+			tokenTtl,
+			log,
+		),
 	)
 
 	return &App{GRPCServer: grpcApp, PSQLApp: psqlApp, REDISApp: redisApp}

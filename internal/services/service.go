@@ -4,27 +4,21 @@ import (
 	_ "github.com/lib/pq"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"log/slog"
-	psqlapp "sso/internal/app/database/psql"
-	redisapp "sso/internal/app/database/redis"
+	"sso/internal/config"
 	authservice "sso/internal/services/auth"
-	"time"
 )
 
 type HandlerServices struct {
-	psql     *psqlapp.PsqlApp
-	redisApp *redisapp.RedisApp
-	tokenTtl time.Duration
-	log      *slog.Logger
+	handleServiceStructure *config.HandleServiceStructure
 }
 
-func NewHandlerServices(psql *psqlapp.PsqlApp, redisApp *redisapp.RedisApp, tokenTtl time.Duration, log *slog.Logger) *HandlerServices {
-	return &HandlerServices{psql: psql, redisApp: redisApp, tokenTtl: tokenTtl, log: log}
+func NewHandlerServices(handleServiceStructure *config.HandleServiceStructure) *HandlerServices {
+	return &HandlerServices{handleServiceStructure: handleServiceStructure}
 }
 
 func (hs *HandlerServices) MakeAuthService() *authservice.Auth {
 	gormDB, err := gorm.Open(postgres.New(postgres.Config{
-		Conn: hs.psql.Db(),
+		Conn: hs.handleServiceStructure.Psql.Db(),
 	}), &gorm.Config{})
 
 	if err != nil {
@@ -33,8 +27,8 @@ func (hs *HandlerServices) MakeAuthService() *authservice.Auth {
 
 	return &authservice.Auth{
 		Gorm:     gormDB,
-		Redis:    hs.redisApp.Client(),
-		TokenTtl: hs.tokenTtl,
-		Log:      hs.log,
+		Redis:    hs.handleServiceStructure.RedisApp.Client(),
+		TokenTtl: hs.handleServiceStructure.TokenTtl,
+		Log:      hs.handleServiceStructure.Log,
 	}
 }

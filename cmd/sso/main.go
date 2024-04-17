@@ -4,14 +4,13 @@ import (
 	"log/slog"
 	"os"
 	"os/signal"
+	"sso/cmd/global"
 	"sso/internal/app"
-	"sso/internal/config"
 	"syscall"
 )
 
 func main() {
-	cfg := config.MustLoadConfig()
-	logger := config.MustLoadLogger(cfg.Env)
+	cfg, logger := global.InitGlobalStructures()
 	application := app.NewApp(
 		logger,
 		cfg.GRPC.Port,

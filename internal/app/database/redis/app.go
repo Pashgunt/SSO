@@ -3,6 +3,7 @@ package redisapp
 import (
 	"github.com/redis/go-redis/v9"
 	"log/slog"
+	"runtime"
 )
 
 type RedisApp struct {
@@ -26,7 +27,7 @@ func NewRedisApp(
 		DB:       db,
 	})
 
-	log.With(slog.String("operation", "psqlapp.NewRedisApp")).
+	log.With(slog.String("operation", MethodForLog())).
 		Info(
 			"Starting REDIS server",
 			slog.String("conn", addr),
@@ -36,7 +37,7 @@ func NewRedisApp(
 }
 
 func (redis *RedisApp) Stop() {
-	redis.log.With(slog.String("operation", "redisapp.Stop")).
+	redis.log.With(slog.String("operation", MethodForLog())).
 		Info(
 			"Stopping REDIS server",
 			slog.String("conn", redis.client.String()),
@@ -45,4 +46,10 @@ func (redis *RedisApp) Stop() {
 	if err := redis.client.Close(); err != nil {
 		panic(err)
 	}
+}
+
+func MethodForLog() string {
+	pc, _, _, _ := runtime.Caller(1)
+
+	return runtime.FuncForPC(pc).Name()
 }

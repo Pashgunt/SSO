@@ -1,8 +1,12 @@
 github.com/BurntSushi/toml v1.2.1/go.mod h1:CxXYINrC8qIiEnFrOxCa7Jy5BFHlXnUU2pbicEuybxQ=
 github.com/BurntSushi/toml v1.3.2 h1:o7IhLm0Msx3BaB+n3Ag7L8EVlByGnpq14C4YWiu/gL8=
 github.com/BurntSushi/toml v1.3.2/go.mod h1:CxXYINrC8qIiEnFrOxCa7Jy5BFHlXnUU2pbicEuybxQ=
+github.com/Pashgunt/Sso-Protobuf-Golang v0.0.3 h1:adCCCAP+iPS7nE8f1gUkRgt17ZFl1j/bwsZa2zKTxwk=
+github.com/Pashgunt/Sso-Protobuf-Golang v0.0.3/go.mod h1:BNsWYFjxjE+Ss76aSxeFmEpXpK/XMJEvDm07QlrzGKQ=
 github.com/Pashgunt/Sso-Protobuf-Golang v0.0.22 h1:lvqrXfc2vQ7jd19K9f0Sew3cIu4PD6WGznUPigLSx7s=
 github.com/Pashgunt/Sso-Protobuf-Golang v0.0.22/go.mod h1:BNsWYFjxjE+Ss76aSxeFmEpXpK/XMJEvDm07QlrzGKQ=
+github.com/Pashgunt/Sso-Protobuf-Golang v0.0.31 h1:A6aaSQApVIosvdvRAVY4ZNkFoJKRAk+hEYCsdAXDHBA=
+github.com/Pashgunt/Sso-Protobuf-Golang v0.0.31/go.mod h1:BNsWYFjxjE+Ss76aSxeFmEpXpK/XMJEvDm07QlrzGKQ=
 github.com/cespare/xxhash/v2 v2.2.0 h1:DC2CZ1Ep5Y4k3ZQ899DldepgrayRUGE6BBZ/cd9Cj44=
 github.com/cespare/xxhash/v2 v2.2.0/go.mod h1:VGX0DQ3Q6kWi7AoAeZDth3/j3BFtOZR5XLFGgcrjCOs=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

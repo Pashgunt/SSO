@@ -36,35 +36,23 @@ func (s *serverAuthApi) Login(
 	ctx context.Context,
 	request *pant_sso_v1.LoginRequest,
 ) (*pant_sso_v1.LoginResponse, error) {
-	validate := validator.New()
-
-	err := validate.Var(request.GetEmail(), "required,email")
-
-	if err != nil {
-		return nil, status.Error(codes.InvalidArgument, err.Error())
+	if err := s.validateLogin(request); err != nil {
+		return nil, err
 	}
 
-	err = validate.Var(request.GetPassword(), "required,min=8")
-
-	if err != nil {
-		return nil, status.Error(codes.InvalidArgument, err.Error())
-	}
-
-	err = validate.Var(request.GetAppUuid(), "required")
-
-	if err != nil {
-		return nil, status.Error(codes.InvalidArgument, err.Error())
-	}
-
-	token, userUuid, _ := s.auth.Login(
+	token, userUuid, err := s.auth.Login(
 		ctx,
 		request.GetEmail(),
 		request.GetPassword(),
 		request.GetAppUuid(),
 	)
 
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
 	return &pant_sso_v1.LoginResponse{
-		UserUuid: userUuid,
+		Uuid:     userUuid,
 		AppUuid:  request.GetAppUuid(),
 		JwtToken: token,
 	}, nil
@@ -74,21 +62,61 @@ func (s *serverAuthApi) Register(
 	ctx context.Context,
 	request *pant_sso_v1.RegisterRequest,
 ) (*pant_sso_v1.RegisterResponse, error) {
+	if err := s.validateRegister(request); err != nil {
+		return nil, err
+	}
+
+	userId, err := s.auth.RegisterNewUser(ctx, request.GetEmail(), request.GetPassword())
+
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	return &pant_sso_v1.RegisterResponse{Uuid: userId}, nil
+}
+
+func (s *serverAuthApi) validateRegister(
+	request *pant_sso_v1.RegisterRequest,
+) error {
 	validate := validator.New()
 
 	err := validate.Var(request.GetEmail(), "required,email")
 
 	if err != nil {
-		return nil, status.Error(codes.InvalidArgument, err.Error())
+		return status.Error(codes.InvalidArgument, err.Error())
 	}
 
 	err = validate.Var(request.GetPassword(), "required,min=8")
 
 	if err != nil {
-		return nil, status.Error(codes.InvalidArgument, err.Error())
+		return status.Error(codes.InvalidArgument, err.Error())
 	}
 
-	userId, _ := s.auth.RegisterNewUser(ctx, request.GetEmail(), request.GetPassword())
+	return nil
+}
 
-	return &pant_sso_v1.RegisterResponse{UserUuid: userId}, nil
+func (s *serverAuthApi) validateLogin(
+	request *pant_sso_v1.LoginRequest,
+) error {
+	validate := validator.New()
+
+	err := validate.Var(request.GetEmail(), "required,email")
+
+	if err != nil {
+		return status.Error(codes.InvalidArgument, err.Error())
+	}
+
+	err = validate.Var(request.GetPassword(), "required,min=8")
+
+	if err != nil {
+		return status.Error(codes.InvalidArgument, err.Error())
+	}
+
+	err = validate.Var(request.GetAppUuid(), "required")
+
+	if err != nil {
+		return status.Error(codes.InvalidArgument, err.Error())
+	}
+
+	return nil
 }

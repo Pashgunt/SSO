@@ -5,6 +5,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	"log/slog"
+	"runtime"
 )
 
 type PsqlApp struct {
@@ -53,21 +54,21 @@ func (psql *PsqlApp) MustRun() {
 }
 
 func (psql *PsqlApp) Run() error {
-	psql.log.With(slog.String("operation", "psqlapp.Run")).
+	psql.log.With(slog.String("operation", psql.MethodForLog())).
 		Info(
 			"Starting PSQL server",
 			slog.String("conn", psql.db.DriverName()),
 		)
 
 	if err := psql.db.Ping(); err != nil {
-		return fmt.Errorf("%s: %w", "psqlapp.Run", err)
+		return fmt.Errorf("%s: %w", psql.MethodForLog(), err)
 	}
 
 	return nil
 }
 
 func (psql *PsqlApp) Stop() {
-	psql.log.With(slog.String("operation", "psqlapp.Stop")).
+	psql.log.With(slog.String("operation", psql.MethodForLog())).
 		Info(
 			"Stopping PSQL server",
 			slog.String("conn", psql.db.DriverName()),
@@ -76,4 +77,10 @@ func (psql *PsqlApp) Stop() {
 	if err := psql.db.Close(); err != nil {
 		panic(err)
 	}
+}
+
+func (psql *PsqlApp) MethodForLog() string {
+	pc, _, _, _ := runtime.Caller(1)
+
+	return runtime.FuncForPC(pc).Name()
 }
