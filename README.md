@@ -3,7 +3,7 @@
 The main task of the project is to create and maintain the functionality of a single entry point to various applications
 and user management.
 
-The main technologies that this project uses are `Go`, `gRPC`, `PSQL`, `Redit`, `Protobuf` and there are many more
+The main technologies that this project uses are `Go`, `gRPC`, `PSQL`, `Redis`, `Protobuf` and there are many more
 dependencies for this project, which can be seen in the file `go.mod`
 
 The remote procedures that are used in this project are described in the repository:
