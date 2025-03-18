@@ -12,6 +12,11 @@ import (
 	authservice "sso/internal/services/auth"
 )
 
+//✔ Создаёт gRPC-сервер
+//✔ Регистрирует сервисы
+//✔ Запускает и останавливает сервер
+//✔ Логирует события
+
 type HandlerServices interface {
 	MakeAuthService() *authservice.Auth
 }
@@ -21,6 +26,11 @@ type App struct {
 	gRPCServer *grpc.Server
 	port       int
 }
+
+//Создаётся новый grpc.Server().
+//Инициализируется структура, управляющая сервисами (HandlerServices).
+//Регистрируется сервис аутентификации (RegisterServerApiHandler).
+//Возвращается объект App.
 
 func NewGrpcApp(
 	port int,
@@ -43,6 +53,11 @@ func (a *App) MustRun() {
 		panic(err)
 	}
 }
+
+//Создаётся лог с названием текущего метода.
+//Открывается TCP-соединение (net.Listen) на заданном порту.
+//Запускается сервер (a.gRPCServer.Serve(listener)).
+//Если что-то идёт не так — ошибка передаётся наверх.
 
 func (a *App) Run() error {
 	log := a.log.With(slog.String("operation", a.MethodForLog()))

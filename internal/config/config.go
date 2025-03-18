@@ -42,7 +42,12 @@ type Redis struct {
 	Db       int    `yaml:"db" env-default:"0"`
 }
 
+// Эта функция загружает конфигурацию и завершает программу при ошибке
 func MustLoadConfig() *Config {
+
+	//Проверяется аргумент командной строки -config.
+	//Если не указан, берётся значение переменной окружения CONFIG_PATH.
+	//Если путь так и не найден, в path остаётся пустая строка.
 	path := func() string {
 		var res string
 
@@ -56,6 +61,8 @@ func MustLoadConfig() *Config {
 		return res
 	}()
 
+	//Если путь пустой → panic("config path is empty").
+	//Если файл не найден → panic("config path does not exist ...").
 	if path == "" {
 		panic("config path is empty")
 	}
@@ -64,6 +71,8 @@ func MustLoadConfig() *Config {
 		panic(fmt.Sprintf("config path does not exists %s", path))
 	}
 
+	//cleanenv.ReadConfig(path, &cfg) читает YAML-файл и записывает данные в cfg.
+	//Если чтение не удалось, программа падает с panic.
 	var cfg Config
 
 	if err := cleanenv.ReadConfig(path, &cfg); err != nil {

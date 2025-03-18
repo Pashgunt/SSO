@@ -38,6 +38,7 @@ func NewPsqlApp(
 	)
 
 	if err != nil {
+		fmt.Println(err.Error())
 		panic(err)
 	}
 

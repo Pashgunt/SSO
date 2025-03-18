@@ -16,6 +16,16 @@ func NewHandlerServices(handleServiceStructure *config.HandleServiceStructure) *
 	return &HandlerServices{handleServiceStructure: handleServiceStructure}
 }
 
+//Открывается соединение с PostgreSQL через gorm.Open().
+//Используется gorm.io/driver/postgres.
+//В качестве подключения (Conn) передаётся hs.handleServiceStructure.Psql.Db().
+//Если соединение не удалось (err != nil), приложение панически завершается (panic(err)).
+//Создаётся и возвращается структура authservice.Auth, которая содержит:
+//Gorm — объект gorm.DB для работы с базой данных.
+//Redis — клиент Redis (hs.handleServiceStructure.RedisApp.Client()).
+//TokenTtl — время жизни токена.
+//Log — логгер.
+
 func (hs *HandlerServices) MakeAuthService() *authservice.Auth {
 	gormDB, err := gorm.Open(postgres.New(postgres.Config{
 		Conn: hs.handleServiceStructure.Psql.Db(),
